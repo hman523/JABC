@@ -19,9 +19,8 @@ btc :: [String] -> String
 btc [num, "PRINT", val] = (addL num ++ "printf(" ++ val ++ ");\n")
 btc [num, "GOTO", val] = (addL num ++ "goto label" ++ val ++ ";\n")
 btc [num, "END"] = (addL num ++ "return 0;\n")
+btc [num, "LET", var, "=", val] =(addL num++"double "++var++"="++val++";\n")
 btc _ = ""
---btc [num, "LET", var, "=", val] = 
-
 
 main :: IO ()
 main = do
