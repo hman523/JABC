@@ -1,7 +1,7 @@
 import Control.Monad
 import System.Environment
 import System.Exit
-
+import Data.List
 
 start = "#include <stdio.h>\n\
 \int main()\n\
@@ -9,10 +9,16 @@ start = "#include <stdio.h>\n\
 end = "\n}\n"
 
 convert :: [[String]] -> String
-convert str = (start ++ (unwords (map btc str)) ++ end)
+convert str = (start ++ (concat (map btc str)) ++ end)
+
+--Add label function
+addL :: String -> String
+addL l = ("label" ++ l ++ ": ")
 
 btc :: [String] -> String
-btc [num, "PRINT", val] = ("label" ++ num ++ ": printf(" ++ val ++ ");\n")
+btc [num, "PRINT", val] = (addL num ++ "printf(" ++ val ++ ");\n")
+btc [num, "GOTO", val] = (addL num ++ "goto label" ++ val ++ ";\n")
+btc [num, "END"] = (addL num ++ "return 0;\n")
 btc _ = ""
 --btc [num, "LET", var, "=", val] = 
 
